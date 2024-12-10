@@ -1,0 +1,69 @@
+import { SignatureViewModel } from '../viewmodel/SignatureViewModel';
+import { SignatureItem } from '../viewmodel/SignatureItem';
+import CommonConstants from '../constants/CommonConstants';
+import { getResourceString } from '../utils/ResourceString';
+
+@Builder
+export function SignatureVerificationBuilder() {
+  SignatureVerification();
+}
+
+@Entry
+@Component
+struct SignatureVerification {
+  @Consume('pageInfos') pageInfos: NavPathStack;
+
+  build() {
+    NavDestination() {
+      Column() {
+        Text($r('app.string.total_count', SignatureViewModel.getSignatureList().length))
+          .fontSize($r('app.float.count_size'))
+          .fontWeight(CommonConstants.FONT_WEIGHT_500)
+          .fontFamily(CommonConstants.FONT_FAMILY_BLACK)
+          .fontColor($r('sys.color.mask_secondary'))
+          .margin({
+            bottom: $r('app.float.count_margin_bottom')
+          })
+        List() {
+          ForEach(SignatureViewModel.getSignatureList(), (item: SignatureItem) => {
+            ListItem() {
+              Row() {
+                Text(item.name)
+                  .fontSize($r('app.float.common_font'))
+                  .fontWeight(CommonConstants.FONT_WEIGHT_500)
+                  .fontFamily(CommonConstants.FONT_FAMILY_BLACK)
+                Image($r('app.media.ic_public_arrow_right'))
+                  .width($r('app.float.arrow_width'))
+                  .height($r('app.float.common_image'))
+              }
+              .width(CommonConstants.FULL_PERCENT)
+              .justifyContent(FlexAlign.SpaceBetween)
+            }
+            .height($r('app.float.list_item_height'))
+            .onClick(() => {
+              this.pageInfos.pushPathByName('SignatureDetail', item);
+            })
+          }, (item: SignatureItem, index: number) => index + JSON.stringify(item))
+        }
+        .backgroundColor(Color.White)
+        .borderRadius($r('sys.float.corner_radius_level8'))
+        .divider({
+          strokeWidth: $r('app.float.stroke_width'),
+          color: $r('app.color.five_black')
+        })
+        .padding({
+          left: $r('app.float.small_padding'),
+          right: $r('app.float.small_padding')
+        })
+      }
+      .alignItems(HorizontalAlign.Start)
+      .padding({
+        top: $r('app.float.list_padding'),
+        left: $r('app.float.medium_padding'),
+        right: $r('app.float.medium_padding')
+      })
+    }
+    .title(getResourceString($r('app.string.signature_btn'), this))
+    .backgroundColor($r('app.color.background_page'))
+  }
+}
