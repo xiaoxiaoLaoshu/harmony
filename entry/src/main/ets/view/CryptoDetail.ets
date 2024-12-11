@@ -12,6 +12,7 @@ import { DataConversion } from '../utils/DataConversion';
 export function CryptoDetailBuilder() {
   CryptoDetail();
 }
+
 @Component
 export struct CryptoDetail {
   @Consume('pageInfos') pageInfos: NavPathStack;
@@ -40,6 +41,7 @@ export struct CryptoDetail {
     NavDestination() {
       Scroll() {
         Column() {
+          // 使用 if 来控制元素的显隐
           if (getResourceString(this.cryptoItem.name, this) ===
           getResourceString($r('app.string.format_conversion'), this)) {
             Row() {

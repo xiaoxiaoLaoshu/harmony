@@ -25,9 +25,13 @@ struct EncryptionAndDecryption {
             .margin({
               bottom: $r('app.float.count_margin_bottom')
             })
+          // List 布局
           List() {
+            // ForEach 循环
             ForEach(CryptoViewModel.getCryptoList(), (item: CryptoItem) => {
+              // ListItem 每一项里的内容
               ListItem() {
+                // 栅格布局
                 Row() {
                   Text(item.name)
                     .fontSize($r('app.float.common_font'))
@@ -44,6 +48,7 @@ struct EncryptionAndDecryption {
               .onClick(() => {
                 this.pageInfos.pushPathByName('CryptoDetail', item)
               })
+            //   渲染唯一性
             }, (item: CryptoItem, index: number) => index + JSON.stringify(item))
           }
           .backgroundColor(Color.White)

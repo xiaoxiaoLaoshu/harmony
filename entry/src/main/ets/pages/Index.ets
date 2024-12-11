@@ -2,6 +2,7 @@ import CommonConstants from '../constants/CommonConstants'
 @Entry
 @Component
 struct Index {
+  // 全局状态管理的一种方式
   @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack();
 
   @Builder
@@ -15,11 +16,13 @@ struct Index {
     .width(CommonConstants.FULL_PERCENT)
   }
   build() {
+    // NavPathStack 路由跳转方式
     Navigation(this.pageInfos){
+      // 栅格布局
       Column({ space: CommonConstants.COLUMN_SPACE }) {
         Button($r('app.string.encrypt_btn'), { stateEffect: true, type: ButtonType.Capsule})
           .onClick(() => {
-            this.pageInfos.pushPathByName('EncryptionAndDecryption', null, false);
+            this.pageInfos.pushPathByName('EncryptionAndDecryption', null, true);
           })
           .width(CommonConstants.FULL_PERCENT)
 
@@ -41,7 +44,7 @@ struct Index {
           })
           .width(CommonConstants.FULL_PERCENT)
       }
-      .justifyContent(FlexAlign.End)
+      .justifyContent(FlexAlign.Center)
       .width(CommonConstants.FULL_PERCENT)
       .height(CommonConstants.FULL_PERCENT)
       .padding($r('app.float.medium_padding'))
