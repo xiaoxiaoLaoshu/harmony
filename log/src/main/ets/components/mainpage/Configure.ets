@@ -15,7 +15,7 @@ export class Configure{
   public defaults: defaultsstruct = { appenders: "", level: LogLevel.DEBUG };
 
   constructor(types: Array<string>, filename: string, appenders: string, level: LogLevel) {
-    this.chesse.type = types;
+    this.chesse.types = types;
     this.chesse.filename = filename;
     this.defaults.appenders = appenders;
     this.defaults.level = level;

@@ -16,7 +16,7 @@ export class LoggerModel {
   }
 
   info(...args: any[]) {
-    hilog,info(this.domain, this.prefix, this.format, args);
+    hilog.info(this.domain, this.prefix, this.format, args);
   }
 
   warn(...args: any[]) {

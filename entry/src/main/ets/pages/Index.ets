@@ -1,84 +1,58 @@
-import { router } from '@kit.ArkUI';
-import { BusinessError } from '@kit.BasicServicesKit';
+import { common } from '@kit.AbilityKit'
+import { Logger, Configure, LogLevel } from '@ohos/log';
+
+let logger: Logger = new Logger(getContext(this) as common.UIAbilityContext);
+let level: LogLevel = LogLevel.DEBUG;
+let configure: Configure = new Configure(['file'], 'log.txt', 'Index', level);
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World';
+  aboutToAppear(): void {
+    logger.setConfigture(configure);
+  }
 
   build() {
-    // 相对容器布局,不考虑里面元素的堆叠顺序
-    RelativeContainer() {
-      // 文本容器，绑定文本内容
-      Text(this.message)
-        // 绑定 id
-        .id('HelloWorld')
-        // 设置文本文字大小
-        .fontSize(50)
-        // 设置文本为加粗
-        .fontWeight(FontWeight.Bold)
-        // 设置该容器相对为父容器的垂直、水平居中
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
-      // 第一种按钮文字写法
-      Button() {
-        Text('Next')
-          .fontSize(20)
-          .fontWeight(FontWeight.Bold)
+    Column() {
+      Row() {
+        Text($r('app.string.EntryAbility_label'))
+          .fontSize(18)
+          .fontColor(Color.White)
+          .textAlign(TextAlign.Center)
       }
-      .onClick(() => {
-        console.info('Click Pre button')
-        // 路由跳转，需要设置路由表，路径为 entry > src > main > resources > base > profile
-        router.pushUrl({
-          url: 'pages/Second'
-        }).then(() => {
-          console.info('Succeeded  in jumping to the second Page.')
-        }).catch((err: BusinessError) => {
-          console.error(`Failed to jump to the second page. Code is ${err.code}, message is ${err.message}`)
-        })
-      })
-      .type(ButtonType.Capsule)
-      .margin({
-        top: 100,
-        left: 100
-      })
+      .height('6%')
+      .width('100%')
+      .padding({ left: 15})
       .backgroundColor('#0D9FFB')
-      .alignRules({
-        center: { anchor: '__container__', align: VerticalAlign.Center },
-        middle: { anchor: '__container__', align: HorizontalAlign.Center }
-      })
-      .width('25%')
-      .height('5%')
-      // 第二种按钮文字写法，但是文字颜色为白色
-      Button('Pre')
-        .onClick(() => {
-          console.info('Click Next button')
-          router.pushUrl({
-            url: 'pages/Third'
-          }).then(() => {
-            console.info('Succeeded  in jumping to the third Page.')
-          }).catch((err: BusinessError) => {
-            console.error(`Failed to jump to the second page. Code is ${err.code}, message is ${err.message}`)
+      .constraintSize({minHeight: 50})
+      Flex({direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center}){
+        Button($r('app.string.log'))
+          .id('log')
+          .fontSize(30)
+          .width('55%')
+          .height('8%')
+          .fontWeight(FontWeight.Bold)
+          .onClick(() => {
+            for(let i = 0;i <= 4;i++) {
+              if (i < 2) {
+                logger.debug(`this is a debug message.The Message number is ${i}`);
+              } else {
+                logger.warn(`this is a warn message.The Message number is ${i}`);
+              }
+              for(let j = 0;j <= 4;j++){
+                if (j < 2) {
+                  logger.info(`this is a info message.The Message number is ${j}`)
+                  console.log('info1111111111111', j);
+                } else {
+                  logger.fatal(`this is a fatal message.The Message number is ${j}`);
+                }
+                logger.error(`this is a error message.i type of ${typeof (i)} j type of ${typeof (j)}`)
+              }
+            }
           })
-        })
-        .fontSize(20)
-        .fontWeight(FontWeight.Bold)
-        .type(ButtonType.Capsule)
-        .margin({
-          top: 100,
-          left: -100
-        })
-        .backgroundColor('#0D9FFB')
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
-        .width('25%')
-        .height('5%')
+      }
     }
-    .height('100%')
     .width('100%')
-    .backgroundColor("#ccc")
+    .height('100%')
+    .backgroundColor('#F1F1F1')
   }
 }

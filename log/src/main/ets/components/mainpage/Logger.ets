@@ -27,7 +27,7 @@ class ConsoleLoggerStrategy implements ILoggerStrategy {
   }
 
   public debug(message: string): void {
-    hilog.dubug(this.domain, this.configure.defaults.appenders, message);
+    hilog.debug(this.domain, this.configure.defaults.appenders, message);
   }
 
   public warn(message: string): void {
@@ -35,7 +35,7 @@ class ConsoleLoggerStrategy implements ILoggerStrategy {
   }
 
   public info(message: string): void {
-    hilog.info(this.domain, this.cofigure.defaults.appenders, message);
+    hilog.info(this.domain, this.configure.defaults.appenders, message);
   }
 
   public error(message: string): void {
@@ -86,7 +86,7 @@ class FileLoggerStrategy implements ILoggerStrategy {
     // Initialization file.
     this.configure = configure;
     let path = context.filesDir;
-    let result = `${path}/${this.configure.cheese.filename}`;
+    let result = `${path}/${this.configure.chesse.filename}`;
     try {
       this.fileStream = fileIo.openSync(result, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
       this.fd = this.fileStream.fd;
@@ -125,11 +125,12 @@ class FileLoggerStrategy implements ILoggerStrategy {
 
 export class Logger {
   private configure: Configure = new Configure([''], '', '', LogLevel.DEBUG);
-  private loggerModel: loggerModel = new LoggerModel(`${this.configure.defaults.appenders}`);
+  private loggerModel: LoggerModel = new LoggerModel(`${this.configure.defaults.appenders}`);
   private strategies: Map<string, ILoggerStrategy> = new Map();
   private context: common.UIAbilityContext;
 
   constructor(context: common.UIAbilityContext) {
+    console.info(JSON.stringify(context),'content1111111111111')
     this.context = context;
   }
 
@@ -137,16 +138,16 @@ export class Logger {
     this.strategies = new Map();
     this.configure = configure;
     this.loggerModel = new LoggerModel(`${configure.defaults.appenders}`);
-    if (!configure || !configure.cheese || !configure.cheese.types) {
+    if (!configure || !configure.chesse || !configure.chesse.types) {
       return;
     }
-    if (configure.cheese.types.includes('file')) {
+    if (configure.chesse.types.includes('file')) {
       this.strategies.set('file', new FileLoggerStrategy(configure, this.context));
     }
-    if (configure.cheese.types.includes('hilog')) {
+    if (configure.chesse.types.includes('hilog')) {
       this.strategies.set('hilog', new HilogLoggerStrategy(configure));
     }
-    if (configure.cheese.types.includes('console') || this.strategies.size <= 0) {
+    if (configure.chesse.types.includes('console') || this.strategies.size <= 0) {
       this.strategies.set('console', new ConsoleLoggerStrategy(configure));
     }
   }
